@@ -256,8 +256,8 @@
     input.value = v.replace(/(.{4})/g, '$1 ').trim();
     const nummer = v;
     const box = document.getElementById('kartenlogo');
-    if (/^4/.test(nummer)) box.innerHTML = LOGOS.【entity-visa¦canonical_name=Visa】;
-    else if (/^5[1-5]/.test(nummer)) box.innerHTML = LOGOS.【entity-mastercard¦canonical_name=Mastercard】;
+        if (/^4/.test(nummer)) box.innerHTML = LOGOS.visa;
+    else if (/^5[1-5]/.test(nummer)) box.innerHTML = LOGOS.mastercard;
     else if (/^3[47]/.test(nummer)) box.innerHTML = LOGOS.amex;
     else box.innerHTML = '<span>Kartentyp wird erkannt</span>';
   }
