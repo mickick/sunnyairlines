@@ -127,7 +127,6 @@
 </div>
 
 <script>
-  // === HIER EINTRAGEN ===
   const SUPABASE_URL = 'https://cduvaqzdubttasqlwtmg.supabase.co';
   const SUPABASE_ANON_KEY = 'sb_publishable_Pkmbe8_Xxfa_dK8AnbMyBA_oN8MV8SS';
   const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -138,8 +137,6 @@
   let belegteSitze = new Set();
   let buchungenAktuell = [];
 
-  // --- KEIN Math.random mehr: Deterministische Flugnummer ---
-  // Gleicher Flug (Route + Datum + Zeit) = immer gleiche Flugnummer
   function hashString(str) {
     let h = 2166136261;
     for (let i = 0; i < str.length; i++) {
@@ -156,7 +153,6 @@
     if (!abflug || !ziel) return '---';
     const airlineMap = { 'FRA': 'LH', 'MUC': 'LH', 'VIE': 'OS', 'ZRH': 'LX' };
     const code = airlineMap[abflug] || 'LH';
-    // Deterministisch aus Route + Datum + Zeit
     const hash = hashString(`${abflug}-${ziel}-${datum}-${zeit}`);
     const nummer = 1000 + (hash % 9000);
     return `${code}${nummer}`;
@@ -197,7 +193,6 @@
     document.getElementById('preisInfo').textContent = `Gesamtpreis: ${getPreisWert()} €`;
   }
 
-  // --- Supabase: Belegte Sitze laden ---
   async function ladeBuchungen() {
     const flugnummer = getFlugnummer();
     const datum = document.getElementById('flugdatum').value;
@@ -248,11 +243,11 @@
     }
   }
 
-  // --- Credit Card Logo FIX: Inline SVG, kein externes Bild ---
-   const LOGOS = {
-    【entity-visa¦canonical_name=Visa】: `<svg viewBox="0 0 48 30" width="48" height="30"><rect width="48" height="30" rx="4" fill="#fff" stroke="#ddd"/><text x="24" y="20" text-anchor="middle" font-family="Arial" font-weight="900" font-style="italic" font-size="13" fill="#1A1F71">VISA</text></svg><span>Visa</span>`,
-    【entity-mastercard¦canonical_name=Mastercard】: `<svg viewBox="0 0 48 30" width="48" height="30"><rect width="48" height="30" rx="4" fill="#fff" stroke="#ddd"/><circle cx="20" cy="15" r="9" fill="#EB001B"/><circle cx="28" cy="15" r="9" fill="#F79E1B" fill-opacity="0.85"/></svg><span>Mastercard</span>`,
-    amex: `<svg viewBox="0 0 48 30" width="48" height="30"><rect width="48" height="30" rx="4" fill="#2E77BC"/><text x="24" y="19" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="10" fill="#fff">AMEX</text></svg><span>American Express</span>`
+  // Kartenlogos - bewusst ohne Markennamen, damit nichts kaputt geht
+  const LOGOS = {
+    k1: `<svg viewBox="0 0 48 30" width="48" height="30"><rect width="48" height="30" rx="4" fill="#fff" stroke="#ddd"/><text x="24" y="20" text-anchor="middle" font-family="Arial" font-weight="900" font-style="italic" font-size="13" fill="#1A1F71">CARD</text></svg><span>Karte 1</span>`,
+    k2: `<svg viewBox="0 0 48 30" width="48" height="30"><rect width="48" height="30" rx="4" fill="#fff" stroke="#ddd"/><circle cx="20" cy="15" r="9" fill="#EB001B"/><circle cx="28" cy="15" r="9" fill="#F79E1B" fill-opacity="0.85"/></svg><span>Karte 2</span>`,
+    k3: `<svg viewBox="0 0 48 30" width="48" height="30"><rect width="48" height="30" rx="4" fill="#2E77BC"/><text x="24" y="19" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="10" fill="#fff">CARD</text></svg><span>Karte 3</span>`
   };
   function zeigeKartenlogo() {
     const input = document.getElementById('kartennummer');
@@ -260,9 +255,9 @@
     input.value = v.replace(/(.{4})/g, '$1 ').trim();
     const nummer = v;
     const box = document.getElementById('kartenlogo');
-        if (/^4/.test(nummer)) box.innerHTML = LOGOS.【entity-visa¦canonical_name=Visa】;
-    else if (/^5[1-5]/.test(nummer)) box.innerHTML = LOGOS.【entity-mastercard¦canonical_name=Mastercard】;
-    else if (/^3[47]/.test(nummer)) box.innerHTML = LOGOS.amex;
+    if (/^4/.test(nummer)) box.innerHTML = LOGOS.k1;
+    else if (/^5[1-5]/.test(nummer)) box.innerHTML = LOGOS.k2;
+    else if (/^3[47]/.test(nummer)) box.innerHTML = LOGOS.k3;
     else box.innerHTML = '<span>Kartentyp wird erkannt</span>';
   }
 
@@ -356,4 +351,9 @@ Gesamtpreis: ${payload.preis} €`;
 </script>
 <div id="ladeOverlay">
   <video id="ladeVideo" muted playsinline loop preload="auto">
-    <source src="lade
+    <source src="ladeanimation.mp4" type="video/mp4">
+  </video>
+  <p>Dein Flug wird gebucht...</p>
+</div>
+</body>
+</html>
