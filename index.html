@@ -158,6 +158,7 @@
       h ^= str.charCodeAt(i);
       h = Math.imul(h, 16777619);
     }
+  await versteckeLadeanimation();
     return Math.abs(h);
   }
   function getFlugnummer() {
@@ -313,6 +314,7 @@ async function versteckeLadeanimation() {
   document.getElementById('ladeVideo').pause();
   document.getElementById('ladeOverlay').style.display = 'none';
   }
+ await versteckeLadeanimation();
   document.getElementById('buchungsForm').addEventListener('submit', async e => {
     e.preventDefault();
     if (!selected.sitz) { showStatus('Bitte wähle einen Sitzplatz.', true); return; }
