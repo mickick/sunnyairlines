@@ -317,6 +317,7 @@ async function versteckeLadeanimation() {
  await versteckeLadeanimation();
   document.getElementById('buchungsForm').addEventListener('submit', async e => {
     e.preventDefault();
+    zeigeLadeanimation();
     if (!selected.sitz) { showStatus('Bitte wähle einen Sitzplatz.', true); return; }
     const btn = document.getElementById('submitBtn');
     btn.disabled = true; btn.textContent = 'Wird gebucht...';
