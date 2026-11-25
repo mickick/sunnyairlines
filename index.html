@@ -325,5 +325,12 @@ Gesamtpreis: ${payload.preis} €`;
   erstelleSitzplan();
   updateFlugnummer();
 </script>
+  <!-- Ladeanimation -->
+<div id="ladeOverlay" style="display:none;">
+  <video id="ladeVideo" muted playsinline loop preload="auto">
+    <source src="ladeanimation.mp4" type="video/mp4">
+  </video>
+  <p>Dein Flug wird gebucht...</p>
+</div>
 </body>
 </html>
