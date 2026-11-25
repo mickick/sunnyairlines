@@ -291,6 +291,28 @@
   document.getElementById('kartennummer').addEventListener('input', zeigeKartenlogo);
   document.getElementById('service').addEventListener('change', berechnePreis);
 
+ // --- Ladeanimation: mindestens 1x laufen, sonst loopen ---
+let ladeStart = 0;
+const LADE_MIN_ZEIT = 4000; // 1x Video = ca. 4 Sekunden
+
+function zeigeLadeanimation() {
+  ladeStart = Date.now();
+  const overlay = document.getElementById('ladeOverlay');
+  const video = document.getElementById('ladeVideo');
+  overlay.style.display = 'flex';
+  video.currentTime = 0;
+  video.play();
+}
+
+async function versteckeLadeanimation() {
+  const schonGelaufen = Date.now() - ladeStart;
+  const nochWarten = LADE_MIN_ZEIT - schonGelaufen;
+  if (nochWarten > 0) {
+    await new Promise(r => setTimeout(r, nochWarten));
+  }
+  document.getElementById('ladeVideo').pause();
+  document.getElementById('ladeOverlay').style.display = 'none';
+  }
   document.getElementById('buchungsForm').addEventListener('submit', async e => {
     e.preventDefault();
     if (!selected.sitz) { showStatus('Bitte wähle einen Sitzplatz.', true); return; }
